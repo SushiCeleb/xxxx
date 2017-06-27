@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <script type="text/javascript" src="demo/js/insert.js"></script>
+<title>thymeleaf</title>
+</head>
+<body>
+	<h1>データ入力</h1>
+
+		<form action="#" th:action="@{/insertSetType}" th:object="${dbform}" method="post">
+			<p>セットタイプ名：
+				<input type="text" th:field="*{utSetType}" size="5" />
+
+			セットタイプ種別：
+				<select th:field="*{setTypes}">
+				<option th:value="2部位" th:text="2部位"/>
+				<option th:value="3部位" th:text="3部位"/>
+				<!-- 以下保留（とりあえずの目標は武器を含めない） -->
+				<option th:value="1部位+武器" th:text="1部位+武器"/>
+				<option th:value="2部位+武器" th:text="2部位+武器"/>
+				<option th:value="3部位+武器" th:text="3部位+武器"/>
+				</select>
+			</p>
+
+			<p>
+				打撃力: <input type="number" th:field="*{dAtk}" size="5" />
+
+				射撃力: <input type="number" th:field="*{sAtk}" size="5" />
+
+				法撃力: <input type="number" th:field="*{hAtk}" size="5" />
+
+				技量: <input type="number" th:field="*{ability}" size="5" />
+			</p>
+			<p>
+				HP: <input type="number" th:field="*{hp}" size="5" />
+
+				PP: <input type="number" th:field="*{pp}" size="5" />
+			</p>
+			<p>
+				<input type="submit" value="Insert" />
+				<input type="reset" value="Reset" />
+			</p>
+		</form>
+<a href="/">home</a>
+</body>
+</html>

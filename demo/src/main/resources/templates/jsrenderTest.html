@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<script src="/js/jsrender.js" th:src="@{/js/jsrender.js}"></script>
+
+<title>jsRenderTest</title>
+
+</head>
+
+
+
+<body>
+ <div id="result"></div>
+
+<script id="theTmpl" type="text/x-jsrender">
+  <p> Name: {{:name}} </p>
+</script>
+
+<script type="text/javascript">
+$(function () {
+  var data = {
+    name: 'Jack'
+  };
+  var html = $('#theTmpl').render(data);
+  $('#result').append(html);
+});
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- jsRender -->
+<script src="/js/jsrender.js" th:src="@{/js/jsrender.js}"></script>
+<!-- jquery -->
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<!-- Bootstrap -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+<title>SerchAndCalc</title>
+</head>
+<body>
+<!-- testSTART -->
+<button id="testBtn" type="button" value="testBtn" name="testBtn">testBtn</button>
+<button id="onBtn" type="button" value="onBtn" name="onBtn" onclick="on()">onBtn</button>
+<script>
+(function () {
+}());
+function on() {
+	document.getElementById("testBtn").style.visibility = "visible";
+};
+</script>
+<!-- testEND -->
+
+	<div class="container-fluid">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="/js/jsrender.js" th:src="@{/js/jsrender.js}"></script>
+
+
+		<h1>データ検索</h1>
+		<form id="form" name="serch" action="#" th:object="${dbform}">
+			<p>
+				部位： <input type="checkbox" th:each="bui:${bui}"
+					th:field="*{checkUnitsyu}" th:value="${bui}" th:text="${bui}" />
+			</p>
+			<p>
+				名称: <input type="text" th:field="*{utName}" />
+			</p>
+			<p>
+				セットタイプ： <select th:field="*{utSetType}">
+					<option value=""></option>
+					<option th:each="settype:${settype}" th:value="${settype}"
+						th:text="${settype}">セットタイプ</option>
+				</select>
+			</p>
+			<p>
+				<!-- 保留 -->
+				<!--
+				セットタイプ条件（実装中※セットタイプ検索でのみ使用）： <input type="checkbox"
+					th:each="setTypes:${setTypes}" th:field="*{setTypes}"
+					th:value="${setTypes}" th:text="${setTypes}" />
+ -->
+			</p>
+			<p>
+				※打撃力: <input type="number" th:field="*{dAtk}" min="0" max="1000" />
+				※射撃力: <input type="number" th:field="*{sAtk}" value="0" min="0"
+					max="1000" /> ※法撃力: <input type="number" th:field="*{hAtk}"
+					value="0" min="0" max="1000" /> ※技量: <input type="number"
+					th:field="*{ability}" value="0" min="0" max="1000" />
+			</p>
+
+			<p>
+				打撃防御力: <input type="number" th:field="*{dDif}" value="0" min="0"
+					max="2000" /> 射撃防御力: <input type="number" th:field="*{sDif}"
+					value="0" min="0" max="2000" /> 法撃防御力: <input type="number"
+					th:field="*{hDif}" value="0" min="0" max="2000" />
+			</p>
+
+			<p>
+				炎耐性: <input type="number" th:field="*{fRst}" value="0" min="0"
+					max="100" /> 氷耐性: <input type="number" th:field="*{iRst}"
+					value="0" min="0" max="100" /> 雷耐性: <input type="number"
+					th:field="*{tRst}" value="0" min="0" max="100" /> 風耐性: <input
+					type="number" th:field="*{wRst}" value="0" min="0" max="100" />
+				光耐性: <input type="number" th:field="*{lRst}" value="0" min="0"
+					max="100" /> 闇耐性: <input type="number" th:field="*{dRst}"
+					value="0" min="0" max="100" />
+			</p>
+
+			<p>
+				※HP: <input type="number" th:field="*{hp}" value="0" min="0"
+					max="1000" /> ※PP: <input type="number" th:field="*{pp}" value="0"
+					min="0" max="1000" />
+			</p>
+			<p>
+				<button id="serch" type="button" name="Serch" value="Serch" onClick = "popSel()">Serch</button>
+				<input type="reset" value="Reset" name="serch" />
+			</p>
+		</form>
+		<form id="formSC" name="selAndCalc">
+			<!-- 以下[Serch]押下後 -->
+
+			<button id="calc" type="button" value="Calc" name="Calc">Calc</button>
+
+
+			<table class="table table-bordered table-condensed table-hover">
+				<thead id="SelHeader"></thead>
+				<tbody id="unitSelect"></tbody>
+			</table>
+
+			<table class="table table-bordered table-condensed">
+				<thead id="CalcHeader"></thead>
+				<tbody id="unitCalcList"></tbody>
+			</table>
+
+			<table class="table table-bordered table-condensed table-hover">
+				<thead id="serchHeader"></thead>
+				<tbody id="serchUnits"></tbody>
+			</table>
+
+
+			<button id="select" type="button" value="Select" name="Select"  onClick = "popCalc()">Select</button>
+
+			<table class="table table-bordered table-condensed">
+				<thead id="serchStHeader"></thead>
+				<tbody id="setTypeSerch"></tbody>
+			</table>
+			<script src="/js/jsTest.js" th:src="@{/js/jsTest.js}"></script>
+
+			<!-- ボタン系押下時にヘッダーを表示する(共通) -->
+			<script id="tempHeader" type="text/x-jsrender">
+			<tr class="info">
+			{{for headers}}
+			<th>{{:header}}</th>
+			{{/for}}
+			</tr>
+			</script>
+			<!-- 検索値をjsRenderで表示する 6/23→取得したオブジェクトを部位ごとに分けてから考える-->
+			<script id="tempSerchUnits" type="text/x-jsrender">
+			{{if arms.length != 0}}
+			<tr>
+				<th colspan="18">検索結果：アーム</th>
+			</tr>
+			{{/if}}
+{{for arms}}
+		<tr>
+		<td>
+		<input id="radioArm" type="radio" name="TargetArm" value="{{>utArmId}}"><label for="radioArm"></label></input>
+		</td>
+		<td><label for="radioArm">{{>utName}}</label></td>
+		<td>{{>utSetType}}</td>
+		<td>{{>datk}}</td>
+		<td>{{>satk}}</td>
+		<td>{{>hatk}}</td>
+		<td>{{>ability}}</td>
+		<td>{{>ddif}}</td>
+		<td>{{>sdif}}</td>
+		<td>{{>hdif}}</td>
+		<td>{{>frst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>wrst}}</td>
+		<td>{{>lrst}}</td>
+		<td>{{>drst}}</td>
+		<td>{{>hp}}</td>
+		<td>{{>pp}}</td>
+		</tr>
+{{/for}}
+			{{if rears.length != 0}}
+			<tr>
+				<th colspan="18">検索結果：リア</th>
+			</tr>
+			{{/if}}
+{{for rears}}
+		<tr>
+		<td>
+		<input id="radioRear" type="radio" name="TargetRear" value="{{>utRearId}}"></input>
+		</td>
+		<td>{{>utName}}</td>
+		<td>{{>utSetType}}</td>
+		<td>{{>datk}}</td>
+		<td>{{>satk}}</td>
+		<td>{{>hatk}}</td>
+		<td>{{>ability}}</td>
+		<td>{{>ddif}}</td>
+		<td>{{>sdif}}</td>
+		<td>{{>hdif}}</td>
+		<td>{{>frst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>wrst}}</td>
+		<td>{{>lrst}}</td>
+		<td>{{>drst}}</td>
+		<td>{{>hp}}</td>
+		<td>{{>pp}}</td>
+		</tr>
+{{/for}}
+			{{if legs.length != 0}}
+			<tr>
+				<th colspan="18">検索結果：レッグ</th>
+			</tr>
+			{{/if}}
+{{for legs}}
+		<tr>
+		<td>
+		<input id="radioLeg" type="radio" name="TargetLeg" value="{{>utLegId}}"></input>
+		</td>
+		<td>{{>utName}}</td>
+		<td>{{>utSetType}}</td>
+		<td>{{>datk}}</td>
+		<td>{{>satk}}</td>
+		<td>{{>hatk}}</td>
+		<td>{{>ability}}</td>
+		<td>{{>ddif}}</td>
+		<td>{{>sdif}}</td>
+		<td>{{>hdif}}</td>
+		<td>{{>frst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>wrst}}</td>
+		<td>{{>lrst}}</td>
+		<td>{{>drst}}</td>
+		<td>{{>hp}}</td>
+		<td>{{>pp}}</td>
+		</tr>
+{{/for}}
+			{{if subs.length != 0}}
+			<tr>
+				<th colspan="18">検索結果：サブ</th>
+			</tr>
+			{{/if}}
+{{for subs}}
+		<tr>
+		<td>
+		<input id="radioSub" type="radio" name="TargetSub" value ="{{>utSubId}}"></input>
+		</td>
+		<td>{{>utName}}</td>
+		<td>{{>utSetType}}</td>
+		<td>{{>datk}}</td>
+		<td>{{>satk}}</td>
+		<td>{{>hatk}}</td>
+		<td>{{>ability}}</td>
+		<td>{{>ddif}}</td>
+		<td>{{>sdif}}</td>
+		<td>{{>hdif}}</td>
+		<td>{{>frst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>wrst}}</td>
+		<td>{{>lrst}}</td>
+		<td>{{>drst}}</td>
+		<td>{{>hp}}</td>
+		<td>{{>pp}}</td>
+		</tr>
+{{/for}}
+
+$(function() {
+  $('[id^="radio"]').click(function(event){
+	  window.alert("test");
+    event.stopPropagation();
+  });
+  $('[id^="radio"]').parent('td').click(function(event){
+    $(this).children('[id^="radio"]').trigger('click');
+  });
+  $('label[for^="radio"]').click(function(event) {
+    event.preventDefault();
+  });
+});
+
+</script>
+<script id="tempSetTypeSerch" type="text/x-jsrender">
+{{for conSetTypes}}
+		<tr>
+		<td>{{>utSetType}}</td>
+		<td>{{>setTypes}}</td>
+		<td>{{>datk}}</td>
+		<td>{{>satk}}</td>
+		<td>{{>hatk}}</td>
+		<td>{{>ability}}</td>
+		<td>{{>hp}}</td>
+		<td>{{>pp}}</td>
+		</tr>
+{{/for}}
+</script>
+	<!-- 検索値中身 -->
+	<script type="text/javascript">
+	//フォームの値を取得
+	$(function() {
+		$('#serch').click(function(){
+			var checkBui =[];
+			var utName = document.serch.utName.value;
+			var setType =document.serch.utSetType.value;
+			var setTypeApp =[];
+			var dAtk = document.serch.dAtk.value;
+			var sAtk = document.serch.sAtk.value;
+			var hAtk = document.serch.hAtk.value;
+			var ability = document.serch.ability.value;
+			var dDif = document.serch.dDif.value;
+			var sDif = document.serch.sDif.value;
+			var hDif = document.serch.hDif.value;
+			var fRst = document.serch.fRst.value;
+			var iRst = document.serch.iRst.value;
+			var tRst = document.serch.tRst.value;
+			var wRst = document.serch.wRst.value;
+			var lRst = document.serch.lRst.value;
+			var dRst = document.serch.dRst.value;
+			var hp = document.serch.hp.value;
+			var pp = document.serch.pp.value;
+			$('input[name="checkUnitsyu"]:checked').each(function() {
+				checkBui.push($(this).val());
+			 });
+			$('input[name="setTypes"]:checked').each(function() {
+				setTypeApp.push($(this).val());
+			 });
+			var serchStatus ={
+					"checkBui" : checkBui, "utName" : utName, "setType" : setType, "setTypeApp" : setTypeApp, "dAtk" : dAtk, "sAtk" : sAtk, "hAtk" : hAtk, "ability" : ability, "dDif" : dDif, "sDif" : sDif, "hDif" : hDif,
+					"fRst" : fRst, "iRst" : iRst, "tRst" : tRst, "wRst" : wRst, "lRst" : lRst, "dRst" : dRst, "hp" : hp, "pp" : pp
+				};
+			var statusHeader ={headers:[{header : ""},
+			                            {header : "ユニット名"},{header : "セットタイプ"},
+			                            {header : "打撃力"},{header : "射撃力"},{header : "法撃力"},{header : "技量"},{header : "打撃防御"},{header : "射撃防御"},{header : "法撃防御"},
+			                   			{header : "炎耐性"},{header : "氷耐性"},{header : "雷耐性"},{header : "風耐性"},{header : "光耐性"},{header : "闇耐性"},{header : "HP"},{header : "PP"}
+			                   			]};
+			var stTypeStatusHeader ={headers:[
+			                            {header : "セットタイプ名"},{header : "セットタイプ条件"},
+			                            {header : "打撃力"},{header : "射撃力"},{header : "法撃力"},{header : "技量"},{header : "HP"},{header : "PP"}
+			                   			]};
+			var unitsStatus ={arms:[], rears:[], legs:[], subs:[], conSetTypes:[]};
+			$.ajax({
+		        type: 'post',
+		        url: '/serchStatus',
+		        data:JSON.stringify(serchStatus),
+		        contentType: 'application/json',
+		        datatype: 'json',
+		        scriptCharset: 'utf-8',
+		        cache: false
+			 	})
+			 	// 入力項目に紐付いた情報の一覧を取得して
+				 .done(function(data){
+					 var status = JSON.parse(JSON.stringify(data));
+
+					 var c =0;
+						$.each(data,function(index,val){
+							if(val == null || val.length == 0){
+								c++;
+							}
+						});
+						if(c ==5){
+							window.alert("検索結果なし")
+						}else{
+					//jsrender用に格納
+					 $.each(status,function(index, val){
+						 if(val != null){
+							 if(index == 0){
+								 val.bui ="アーム";
+								 unitsStatus.arms.push(unitsStatus['arms'] = val);
+							 }
+							 if(index == 1){
+								 val.bui ="リア";
+								 unitsStatus.rears.push(unitsStatus['rears'] = val);
+							 }
+							 if(index == 2){
+								 val.bui ="レッグ";
+								 unitsStatus.legs.push(unitsStatus['legs'] = val);
+							 }
+							 if(index == 3){
+								 val.bui ="サブ";
+								 unitsStatus.subs.push(unitsStatus['subs'] = val);
+							 }
+							 if(index == 4){
+								 unitsStatus.conSetTypes.push(unitsStatus['conSetTypes'] = val);
+							 }
+						 }
+					 });
+
+					//ヘッダー、検索ユニットのステータスをjsRenderで表示
+					 $("#serchHeader").html(
+							 $("#tempHeader").render(statusHeader)
+						 );
+
+					 $("#serchUnits").html(
+							 $("#tempSerchUnits").render(unitsStatus)
+						 );
+					//ヘッダー、検索ユニットに関連するセットタイプをjsRenderで表示
+					 $("#serchStHeader").html(
+							 $("#tempHeader").render(stTypeStatusHeader)
+						 );
+
+					 $("#setTypeSerch").html(
+							 $("#tempSetTypeSerch").render(unitsStatus)
+						 );
+					}
+
+				 }).fail(function(data){
+				      window.alert('正しい結果を得られませんでした。');
+				 });
+		});
+	});
+	</script>
+
+			<!-- 選択値をjsRenderで表示する -->
+			<script id="tempSelUnits" type="text/x-jsrender">
+		{{for units}}
+		<tr>
+		<td>{{>bui}}</td>
+		<td>
+		{{if bui == "アーム"}}
+		<input id="checkArm" type="checkbox" name="ArmUnit" value="{{>utArmId}}"></input>
+		{{else bui == "リア"}}
+		<input id="checkRear" type="checkbox" name="RearUnit" value="{{>utRearId}}"></input>
+		{{else bui == "レッグ"}}
+		<input id="checkLeg" type="checkbox" name="LegUnit" value="{{>utLegId}}"></input>
+		{{else bui == "サブ"}}
+		<input id="checkArm" type="checkbox" name="ArmUnit" value ="{{>utSubId}}"></input>
+		{{/if}}
+		</td>
+		<td>{{>utName}}</td>
+		<td>{{>utSetType}}</td>
+		<td>{{>datk}}</td>
+		<td>{{>satk}}</td>
+		<td>{{>hatk}}</td>
+		<td>{{>ability}}</td>
+		<td>{{>ddif}}</td>
+		<td>{{>sdif}}</td>
+		<td>{{>hdif}}</td>
+		<td>{{>frst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>wrst}}</td>
+		<td>{{>lrst}}</td>
+		<td>{{>drst}}</td>
+		<td>{{>hp}}</td>
+		<td>{{>pp}}</td>
+		</tr>
+		{{/for}}
+	</script>
+			<!-- 選択値中身 -->
+			<script type="text/javascript">
+	//radio にてチェックされているものの	//idを取得
+	// idの元にajaxにてget
+	$(function() {
+		$('#select').click(function(){
+			var arm = (document.getElementById("radioArm") ? (document.selAndCalc.TargetArm.value != "" ? document.selAndCalc.TargetArm.value : undefined) : undefined);
+			var rear = (document.getElementById("radioRear") ? (document.selAndCalc.TargetRear.value != "" ? document.selAndCalc.TargetRear.value : undefined) : undefined);
+			var leg = (document.getElementById("radioLeg") ? (document.selAndCalc.TargetLeg.value != "" ? document.selAndCalc.TargetLeg.value : undefined) : undefined);
+			var sub = (document.getElementById("radioSub") ? (document.selAndCalc.TargetSub.value != "" ? document.selAndCalc.TargetSub.value :undefined) : undefined);
+			var units =JSON.stringify({
+	        	"arm" : arm,
+	        	"rear" : rear,
+	        	"leg" : leg,
+	        	"sub" : sub
+	        });
+			var statusHeader ={headers:[{header : "選択部位"},{header : "check"},
+			                            {header : "ユニット名"},{header : "セットタイプ"},
+			                            {header : "打撃力"},{header : "射撃力"},{header : "法撃力"},{header : "技量"},{header : "打撃防御"},{header : "射撃防御"},{header : "法撃防御"},
+			                   			{header : "炎耐性"},{header : "氷耐性"},{header : "雷耐性"},{header : "風耐性"},{header : "光耐性"},{header : "闇耐性"},{header : "HP"},{header : "PP"}
+			                   			]};
+			var selUnitsStatus ={units:[
+			                      ]};
+			$.ajax({
+		        type: 'post',
+		        url: '/takeStatus',
+		        data:units,
+		        contentType: 'application/json',
+		        datatype: 'json',
+		        scriptCharset: 'utf-8',
+		        cache: false
+			 	})
+			 	// idに紐付いた情報の一覧を取得して
+				 .done(function(data){
+					//返ってきたときの処理
+
+					 var status = JSON.parse(JSON.stringify(data));
+
+
+					//部位情報を付与他ループ用に弄りたい
+
+					 $.each(status,function(index, val){
+						 if(val != null){
+							 if(index == 0){
+								 val.bui ="アーム";
+								 selUnitsStatus.units.push(units['unit'] = val);
+							 }
+							 if(index == 1){
+								 val.bui ="リア";
+								 selUnitsStatus.units.push(units['unit'] = val);
+							 }
+							 if(index == 2){
+								 val.bui ="レッグ";
+								 selUnitsStatus.units.push(units['unit'] = val);
+							 }
+							 if(index == 3){
+								 val.bui ="サブ";
+								 selUnitsStatus.units.push(units['unit'] = val);
+							 }
+						 }
+					 });
+
+					//ヘッダー、選択ユニットのステータスをjsRenderで表示
+					 $("#SelHeader").html(
+							 $("#tempHeader").render(statusHeader)
+						 );
+
+					 $("#unitSelect").html(
+							 $("#tempSelUnits").render(selUnitsStatus)
+						 );
+				 }).fail(function(data){
+				      window.alert('正しい結果を得られませんでした。');
+				 });
+		});
+	});
+	</script>
+			<!-- 選択値ここまで -->
+
+			<!-- 合計値をjsRenderで表示する -->
+			<script id="CalcUnits" type="text/x-jsrender">
+		<tr>
+		<td></td>
+		<td>{{>datk}}</td>
+		<td>{{>satk}}</td>
+		<td>{{>hatk}}</td>
+		<td>{{>ability}}</td>
+		<td>{{>ddif}}</td>
+		<td>{{>sdif}}</td>
+		<td>{{>hdif}}</td>
+		<td>{{>frst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>trst}}</td>
+		<td>{{>wrst}}</td>
+		<td>{{>lrst}}</td>
+		<td>{{>drst}}</td>
+		<td>{{>hp}}</td>
+		<td>{{>pp}}</td>
+		</tr>
+	</script>
+			<script type="text/javascript">
+	//checkbox にてチェックされているものの	//idを取得
+	// idの元にajaxにてget
+	//var data = {パラメータ : 値};
+	$(function() {
+		$('#calc').click(function(){
+			var calcName = document.getElementById('calc').name;
+			var arm = document.getElementById("checkArm")?document.getElementById("checkArm").value:undefined;
+			var rear = document.getElementById("checkRear")?document.getElementById("checkRear").value:undefined;
+			var leg = document.getElementById("checkLeg")?document.getElementById("checkLeg").value:undefined;
+			var sub = document.getElementById("checkSub")?document.getElementById("checkSub").value:undefined;
+			var units =JSON.stringify({
+	        	"arm" : arm,
+	        	"rear" : rear,
+	        	"leg" : leg,
+	        	"sub" : sub
+	        });
+			//var statusHeader =["打撃力","射撃力","法撃力","技量","打撃防御","射撃防御","法撃防御","炎耐性","氷耐性","雷耐性","風耐性","光耐性","闇耐性","HP","PP"];
+			var statusHeader ={headers:[{header : "セットタイプ(仮)"},
+			                            {header : "打撃力"},{header : "射撃力"},{header : "法撃力"},{header : "技量"},{header : "打撃防御"},{header : "射撃防御"},{header : "法撃防御"},
+			                   			{header : "炎耐性"},{header : "氷耐性"},{header : "雷耐性"},{header : "風耐性"},{header : "光耐性"},{header : "闇耐性"},{header : "HP"},{header : "PP"}
+			                   			]};
+			var calcResult = {
+					 "datk" : 0,"satk" : 0,"hatk" : 0,"ability" : 0, "ddif" : 0,"sdif" : 0,"hdif" : 0,
+					 "frst" : 0,"irst" : 0,"trst" : 0, "wrst" : 0,"lrst" : 0,"drst" : 0, "hp" : 0,"pp" : 0
+			 };
+
+			$.ajax({
+			        type: 'post',
+			        url: '/takeStatus',
+			        data:units,
+			        contentType: 'application/json',
+			        datatype: 'json',
+			        scriptCharset: 'utf-8',
+			        cache: false
+				 	})
+				 // idに紐付いた情報の一覧を取得して
+				 .done(function(data){
+					//返ってきたときの処理
+					 var status = JSON.parse(JSON.stringify(data));
+					//javascript側で合計値を計算
+					// or
+					// idに紐付いた情報群の研鑽した合計値,ユニット名を取得
+					 $.each(status,function(index, val){
+						 if(val != null){
+							 calcResult["datk"] += val["datk"];
+							 calcResult["satk"] += val["satk"];
+							 calcResult["hatk"] += val["hatk"];
+							 calcResult["ability"] += val["ability"];
+							 calcResult["ddif"] += val["ddif"];
+							 calcResult["sdif"] += val["sdif"];
+							 calcResult["hdif"] += val["hdif"];
+							 calcResult["frst"] += val["frst"];
+							 calcResult["irst"] += val["irst"];
+							 calcResult["trst"] += val["trst"];
+							 calcResult["wrst"] += val["wrst"];
+							 calcResult["lrst"] += val["lrst"];
+							 calcResult["drst"] += val["drst"];
+							 calcResult["hp"] += val["hp"];
+							 calcResult["pp"] += val["pp"];
+						 	}
+					 });
+						//ヘッダー、合計値をjsRenderで表示
+						 $("#CalcHeader").html(
+								 $("#tempHeader").render(statusHeader)
+							 );
+						 $("#unitCalcList").html(
+								 $("#CalcUnits").render(calcResult)
+						 );
+
+					 }).fail(function(data){
+				      window.alert('正しい結果を得られませんでした。');
+					});
+					});
+				});
+			</script>
+		</form>
+	</div>
+</body>
+</html>

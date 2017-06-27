@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>thymeleaf</title>
+</head>
+<body>
+	<h1>データ入力</h1>
+
+		<form action="#" th:action="@{/insert}" th:object="${dbform}" method="post">
+			<p>
+			部位<select th:field="*{ut}">
+			<option th:value="アーム">アーム</option>
+			<option th:value="リア">リア</option>
+			<option th:value="レッグ">レッグ</option>
+			<option th:value="サブ">サブ</option>
+			</select>
+			</p>
+			<p>
+				名称: <input type="text" th:field="*{utName}" />
+			</p>
+			<p>セットタイプ：
+			<select th:field="*{utSetType}">
+			<option value=""></option>
+			<option th:each="settype:${settype}" th:value="${settype}" th:text="${settype}">セットタイプ
+			</option>
+			</select>
+			</p>
+			<p>
+				打撃力: <input type="number" value ="0" th:field="*{dAtk}" min="0" max="1000" />
+				射撃力: <input type="number" th:field="*{sAtk}" min="0" max="1000" />
+				法撃力: <input type="number" th:field="*{hAtk}" min="0" max="1000" />
+				技量: <input type="number" th:field="*{ability}" min="0" max="1000" />
+			</p>
+			<p>
+				打撃防御力: <input type="number" th:field="*{dDif}" min="0" max="5000" />
+				射撃防御力: <input type="number" th:field="*{sDif}" min="0" max="5000" />
+				法撃防御力: <input type="number" th:field="*{hDif}" min="0" max="5000" />
+			</p>
+			<p>
+				炎耐性: <input type="number" th:field="*{fRst}" min="0" max="100" />
+				氷耐性: <input type="number" th:field="*{iRst}" min="0" max="100" />
+				雷耐性: <input type="number" th:field="*{tRst}" min="0" max="100" />
+				風耐性: <input type="number" th:field="*{wRst}" min="0" max="100" />
+				光耐性: <input type="number" th:field="*{lRst}" min="0" max="100" />
+				闇耐性: <input type="number" th:field="*{dRst}" min="0" max="100" />
+			</p>
+			<p>
+				HP: <input type="number" th:field="*{hp}" min="0" max="1000" />
+				PP: <input type="number" th:field="*{pp}" min="0" max="1000" />
+			</p>
+			<p>
+				<input type="submit" value="Insert" /> <input type="reset"
+					value="Reset" />
+			</p>
+		</form>
+		<!-- [Insert]押下時、入力した値を表示する -->
+			入力値
+	<table>
+		<tr>
+			<th>部位</th>
+			<th>ユニット名</th>
+			<th>セットタイプ</th>
+			<th>打撃力</th>
+			<th>射撃力</th>
+			<th>法撃力</th>
+			<th>技量</th>
+			<th>打撃防御</th>
+			<th>射撃防御</th>
+			<th>法撃防御</th>
+			<th>炎耐性</th>
+			<th>氷耐性</th>
+			<th>雷耐性</th>
+			<th>風耐性</th>
+			<th>光耐性</th>
+			<th>闇耐性</th>
+			<th>HP</th>
+			<th>PP</th>
+		</tr>
+		<tr th:each="nform:${nform}">
+			<td th:text="${nform.ut}">部位</td>
+			<td th:text="${nform.utName}">ユニット名</td>
+			<td th:text="${nform.utSetType}">セットタイプ</td>
+			<td th:text="${nform.dAtk}">打撃力</td>
+			<td th:text="${nform.sAtk}">射撃力</td>
+			<td th:text="${nform.hAtk}">法撃力</td>
+			<td th:text="${nform.ability}">技量</td>
+			<td th:text="${nform.dDif}">打撃防御</td>
+			<td th:text="${nform.sDif}">射撃防御</td>
+			<td th:text="${nform.hDif}">法撃防御</td>
+			<td th:text="${nform.fRst}">炎耐性</td>
+			<td th:text="${nform.iRst}">氷耐性</td>
+			<td th:text="${nform.tRst}">雷耐性</td>
+			<td th:text="${nform.wRst}">風耐性</td>
+			<td th:text="${nform.lRst}">光耐性</td>
+			<td th:text="${nform.dRst}">闇耐性</td>
+			<td th:text="${nform.hp}">HP</td>
+			<td th:text="${nform.pp}">PP</td>
+		</tr>
+	</table>
+	<a href="/">home</a>
+</body>
+</html>

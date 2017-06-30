@@ -66,6 +66,10 @@ public class SerchController {
 	public String jsRenderTest() {
 		return "jsrenderTest";
 	}
+	@GetMapping("/testpage")public String test() {
+		return "NewFile";
+	}
+
 	/**
 	 * 検索画面
 	 *

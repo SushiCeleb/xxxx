@@ -17,14 +17,22 @@
 <body>
 	<div class="container-fluid">
 
-
-
 		<h1>データ検索</h1>
+
 		<form id="form" name="serch" action="#" th:object="${dbform}">
+		<!--
 			<p>
 				部位： <input type="checkbox" th:each="bui:${bui}"
-					th:field="*{checkUnitsyu}" th:value="${bui}" th:text="${bui}" />
+					id="'bui'+${bui.index}" th:field="*{checkUnitsyu}" th:value="${bui}" th:text="${bui}"></input><label for="'bui'+${bui.index}">a</label>
 			</p>
+		 -->
+		 	<p>
+		 		部位
+		 		<input id="buiArm" type="checkbox" th:field="*{checkUnitsyu}" value="アーム"/><label class="labelDef" for="buiArm">アーム</label>
+		 		<input id="buiRear" type="checkbox" th:field="*{checkUnitsyu}" value="リア"/><label class="labelDef" for="buiRear">リア</label>
+		 		<input id="buiLeg" type="checkbox" th:field="*{checkUnitsyu}" value="レッグ"/><label class="labelDef" for="buiLeg">レッグ</label>
+		 		<input id="buiSub" type="checkbox" th:field="*{checkUnitsyu}" value="サブ"/><label class="labelDef" for="buiSub">サブ</label>
+		 	</p>
 			<p>
 				名称: <input type="text" th:field="*{utName}" />
 			</p>
@@ -81,32 +89,43 @@
 			<input type="reset" value="Reset" name="serch" />
 			 <br/>
 		</form>
+
 		<form id="formSC" name="selAndCalc">
 			<!-- 以下ボタン押下後 -->
 			<input id ="popActSel" type="radio" name="selflg"/>
 			<input id ="popActSch" type="radio" name="serchflg"/>
 
 			<!-- 上から、合計、選択ユニット、検索結果を出すテーブル -->
-			<table class="table table-bordered table-condensed">
+			<div class="row">
+			<div class="col-md-10">
+			<table class="table table-bordered table-condensed" >
 				<thead id="CalcHeader"></thead>
 				<tbody id="unitCalcList"></tbody>
 			</table>
+			</div>
+			</div>
 
-
+			<div class="row">
+			<div class="tbRSbtn col-md-10">
 			<table class="table table-bordered table-condensed table-hover">
 				<thead id="SelHeader"></thead>
 				<tbody id="unitSelect"></tbody>
 			</table>
+			</div>
+			</div>
 			<div class="popCal">
 					<button id="calc" type="button">Calc</button>
 			</div>
 
 
-
+			<div class="row">
+			<div class="tbRSbtn col-md-10">
 			<table class="table table-bordered table-condensed table-hover">
 				<thead id="serchHeader"></thead>
 				<tbody id="serchUnits"></tbody>
 			</table>
+			</div>
+			</div>
 
 			<div class="popSel">
 				<button id="select" type="button">
@@ -114,17 +133,15 @@
 				</button>
 			</div>
 
+
+			<div class="row">
+			<div class="col-md-10">
 			<table class="table table-bordered table-condensed">
 				<thead id="serchStHeader"></thead>
 				<tbody id="setTypeSerch"></tbody>
 			</table>
-			<!-- test -->
-
-			<!-- ここまで -->
-			<!--
-			<script src="/js/jsTest.js" th:src="@{/js/jsTest.js}"></script>
-			 -->
-
+			</div>
+			</div>
 
 			<!-- ボタン系押下時にヘッダーを表示する(共通) -->
 			<script id="tempHeader" type="text/x-jsrender">
@@ -146,23 +163,23 @@
 		<td>
 		<input id="radioArm{{>#index}}" type="radio" name="TargetArm" value="{{>utArmId}}"></input>
 		</td>
-		<td><label for="radioArm{{>#index}}">{{>utName}}</label></td>
-		<td><label for="radioArm{{>#index}}">{{>utSetType}}</label></td>
-		<td>{{>datk}}</td>
-		<td>{{>satk}}</td>
-		<td>{{>hatk}}</td>
-		<td>{{>ability}}</td>
-		<td>{{>ddif}}</td>
-		<td>{{>sdif}}</td>
-		<td>{{>hdif}}</td>
-		<td>{{>frst}}</td>
-		<td>{{>trst}}</td>
-		<td>{{>trst}}</td>
-		<td>{{>wrst}}</td>
-		<td>{{>lrst}}</td>
-		<td>{{>drst}}</td>
-		<td>{{>hp}}</td>
-		<td>{{>pp}}</td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>utName}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>utSetType}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>datk}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>satk}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>hatk}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>ability}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>ddif}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>sdif}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>hdif}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>frst}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>trst}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>trst}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>wrst}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>lrst}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>drst}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>hp}}</label></td>
+		<td><label class="labelDef" for="radioArm{{>#index}}">{{>pp}}</label></td>
 		</tr>
 {{/for}}
 			{{if rears.length != 0}}
@@ -173,25 +190,25 @@
 {{for rears}}
 		<tr>
 		<td>
-		<input id="radioRear" type="radio" name="TargetRear" value="{{>utRearId}}"></input>
+		<input id="radioRear{{>#index}}" type="radio" name="TargetRear" value="{{>utRearId}}"></input>
 		</td>
-		<td>{{>utName}}</td>
-		<td>{{>utSetType}}</td>
-		<td>{{>datk}}</td>
-		<td>{{>satk}}</td>
-		<td>{{>hatk}}</td>
-		<td>{{>ability}}</td>
-		<td>{{>ddif}}</td>
-		<td>{{>sdif}}</td>
-		<td>{{>hdif}}</td>
-		<td>{{>frst}}</td>
-		<td>{{>trst}}</td>
-		<td>{{>trst}}</td>
-		<td>{{>wrst}}</td>
-		<td>{{>lrst}}</td>
-		<td>{{>drst}}</td>
-		<td>{{>hp}}</td>
-		<td>{{>pp}}</td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>utName}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>utSetType}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>datk}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>satk}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>hatk}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>ability}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>ddif}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>sdif}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>hdif}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>frst}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>trst}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>trst}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>wrst}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>lrst}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>drst}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>hp}}</label></td>
+		<td><label class="labelDef" for="radioRear{{>#index}}">{{>pp}}</label></td>
 		</tr>
 {{/for}}
 			{{if legs.length != 0}}
@@ -388,7 +405,6 @@
 			<script id="tempSelUnits" type="text/x-jsrender">
 		{{for units}}
 		<tr>
-		<td>{{>bui}}</td>
 		<td>
 		{{if bui == "アーム"}}
 		<input id="checkArm" type="checkbox" name="ArmUnit" value="{{>utArmId}}"></input>
@@ -400,6 +416,7 @@
 		<input id="checkArm" type="checkbox" name="ArmUnit" value ="{{>utSubId}}"></input>
 		{{/if}}
 		</td>
+		<td>{{>bui}}</td>
 		<td>{{>utName}}</td>
 		<td>{{>utSetType}}</td>
 		<td>{{>datk}}</td>
@@ -437,7 +454,7 @@
 	        	"leg" : leg,
 	        	"sub" : sub
 	        });
-			var statusHeader ={headers:[{header : "選択部位"},{header : "check"},
+			var statusHeader ={headers:[{header : ""},{header : "選択部位"},
 			                            {header : "ユニット名"},{header : "セットタイプ"},
 			                            {header : "打撃力"},{header : "射撃力"},{header : "法撃力"},{header : "技量"},{header : "打撃防御"},{header : "射撃防御"},{header : "法撃防御"},
 			                   			{header : "炎耐性"},{header : "氷耐性"},{header : "雷耐性"},{header : "風耐性"},{header : "光耐性"},{header : "闇耐性"},{header : "HP"},{header : "PP"}

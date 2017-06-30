@@ -10,11 +10,15 @@
   display: none;
 }
 */
-/*ボタンの中にあるラベルの書式調整*/
+/*ラベルの書式調整*/
 [id^="lFont"]{
 	font-weight: lighter;
 	line-height : 0.7em;
 }
+.labelDef{
+	font-weight: lighter;
+}
+
 
 /* Select,Calcボタン表示 */
 #popActSch:not(:checked) ~ .popSel,
@@ -34,8 +38,26 @@
   overflow: hidden;
 }
 
-.tstTable{
-	width: 50%;
-	 height:100%;
+/*
+.tableWd th,
+.tableWd tr{
+	white-space: nowrap;
+	}
+	*/
+.tbRSbtn th:nth-child(1){
+	width:10px;
+	}
+
+/*
+.pointer-events{
+	pointer-events : none;
 }
+*/
+
+#test1:checked#test2:checked ~ .pointer-events{
+
+	pointer-events : none;
+
+}
+
 

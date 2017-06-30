@@ -1,22 +1,30 @@
 /**
  *
  */
-(function () {
-			document.getElementById("select").style.visibility = "hidden";
-			document.getElementById("calc").style.visibility = "hidden";
-			}());
+			$(document).ready(function() {
+				  //tr要素をクリックでイベント発火
+				      $('table tr').click(function() {
+				        //td要素からチェックボックスを探す
+				             var $c = $(this).children('td').children('input[type=checkbox]');
+				            if($c.prop('checked'))
+				           $c.prop('checked', '');
+				        else
+				           $c.prop('checked', 'checked');
+				      });
+				});
 
-function popSel(){
-	document.getElementById("select").style.visibility = "visible";
-}
-function popCalc(){
-	document.getElementById("calc").style.visibility = "visible";
-}
-
-
-
-
-
+			$(document).ready(function() {
+				  //tr要素をクリックでイベント発火
+				      $('table tr').click(function() {
+				    	  alert("evrnt1");
+				        //td要素からチェックボックスを探す
+				             var $c = $(this).children('td').children('input[type=radio]');
+				            if($c.prop('checked'))
+				           $c.prop('checked', '');
+				        else
+				           $c.prop('checked', 'checked');
+				      });
+				});
 
 
 

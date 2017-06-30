@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
+<meta charset="utf-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="/css/style.css" th:href="@{/css/seigyo.css}" rel="stylesheet"/>
 <!-- jsRender -->
 <script src="/js/jsrender.js" th:src="@{/js/jsrender.js}"></script>
 <!-- jquery -->
@@ -14,21 +15,8 @@
 <title>SerchAndCalc</title>
 </head>
 <body>
-<!-- testSTART -->
-<button id="testBtn" type="button" value="testBtn" name="testBtn">testBtn</button>
-<button id="onBtn" type="button" value="onBtn" name="onBtn" onclick="on()">onBtn</button>
-<script>
-(function () {
-}());
-function on() {
-	document.getElementById("testBtn").style.visibility = "visible";
-};
-</script>
-<!-- testEND -->
-
 	<div class="container-fluid">
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-		<script src="/js/jsrender.js" th:src="@{/js/jsrender.js}"></script>
+
 
 
 		<h1>データ検索</h1>
@@ -86,40 +74,57 @@ function on() {
 					max="1000" /> ※PP: <input type="number" th:field="*{pp}" value="0"
 					min="0" max="1000" />
 			</p>
-			<p>
-				<button id="serch" type="button" name="Serch" value="Serch" onClick = "popSel()">Serch</button>
-				<input type="reset" value="Reset" name="serch" />
-			</p>
+
+			<button id="serch" type="button">
+				<label  id="lFont1" for="popActSch" class="popActSch">Serch</label>
+			</button>
+			<input type="reset" value="Reset" name="serch" />
+			 <br/>
 		</form>
 		<form id="formSC" name="selAndCalc">
-			<!-- 以下[Serch]押下後 -->
+			<!-- 以下ボタン押下後 -->
+			<input id ="popActSel" type="radio" name="selflg"/>
+			<input id ="popActSch" type="radio" name="serchflg"/>
 
-			<button id="calc" type="button" value="Calc" name="Calc">Calc</button>
+			<!-- 上から、合計、選択ユニット、検索結果を出すテーブル -->
+			<table class="table table-bordered table-condensed">
+				<thead id="CalcHeader"></thead>
+				<tbody id="unitCalcList"></tbody>
+			</table>
 
 
 			<table class="table table-bordered table-condensed table-hover">
 				<thead id="SelHeader"></thead>
 				<tbody id="unitSelect"></tbody>
 			</table>
+			<div class="popCal">
+					<button id="calc" type="button">Calc</button>
+			</div>
 
-			<table class="table table-bordered table-condensed">
-				<thead id="CalcHeader"></thead>
-				<tbody id="unitCalcList"></tbody>
-			</table>
+
 
 			<table class="table table-bordered table-condensed table-hover">
 				<thead id="serchHeader"></thead>
 				<tbody id="serchUnits"></tbody>
 			</table>
 
-
-			<button id="select" type="button" value="Select" name="Select"  onClick = "popCalc()">Select</button>
+			<div class="popSel">
+				<button id="select" type="button">
+					<label id="lFont2" for="popActSel" class="popActSel">Select</label>
+				</button>
+			</div>
 
 			<table class="table table-bordered table-condensed">
 				<thead id="serchStHeader"></thead>
 				<tbody id="setTypeSerch"></tbody>
 			</table>
+			<!-- test -->
+
+			<!-- ここまで -->
+			<!--
 			<script src="/js/jsTest.js" th:src="@{/js/jsTest.js}"></script>
+			 -->
+
 
 			<!-- ボタン系押下時にヘッダーを表示する(共通) -->
 			<script id="tempHeader" type="text/x-jsrender">
@@ -139,10 +144,10 @@ function on() {
 {{for arms}}
 		<tr>
 		<td>
-		<input id="radioArm" type="radio" name="TargetArm" value="{{>utArmId}}"><label for="radioArm"></label></input>
+		<input id="radioArm{{>#index}}" type="radio" name="TargetArm" value="{{>utArmId}}"></input>
 		</td>
-		<td><label for="radioArm">{{>utName}}</label></td>
-		<td>{{>utSetType}}</td>
+		<td><label for="radioArm{{>#index}}">{{>utName}}</label></td>
+		<td><label for="radioArm{{>#index}}">{{>utSetType}}</label></td>
 		<td>{{>datk}}</td>
 		<td>{{>satk}}</td>
 		<td>{{>hatk}}</td>
@@ -247,19 +252,6 @@ function on() {
 		<td>{{>pp}}</td>
 		</tr>
 {{/for}}
-
-$(function() {
-  $('[id^="radio"]').click(function(event){
-	  window.alert("test");
-    event.stopPropagation();
-  });
-  $('[id^="radio"]').parent('td').click(function(event){
-    $(this).children('[id^="radio"]').trigger('click');
-  });
-  $('label[for^="radio"]').click(function(event) {
-    event.preventDefault();
-  });
-});
 
 </script>
 <script id="tempSetTypeSerch" type="text/x-jsrender">
@@ -434,10 +426,11 @@ $(function() {
 	// idの元にajaxにてget
 	$(function() {
 		$('#select').click(function(){
-			var arm = (document.getElementById("radioArm") ? (document.selAndCalc.TargetArm.value != "" ? document.selAndCalc.TargetArm.value : undefined) : undefined);
-			var rear = (document.getElementById("radioRear") ? (document.selAndCalc.TargetRear.value != "" ? document.selAndCalc.TargetRear.value : undefined) : undefined);
-			var leg = (document.getElementById("radioLeg") ? (document.selAndCalc.TargetLeg.value != "" ? document.selAndCalc.TargetLeg.value : undefined) : undefined);
-			var sub = (document.getElementById("radioSub") ? (document.selAndCalc.TargetSub.value != "" ? document.selAndCalc.TargetSub.value :undefined) : undefined);
+			//var arm = (document.getElementById("radioArm") ? (document.selAndCalc.TargetArm.value != "" ? document.selAndCalc.TargetArm.value : undefined) : undefined);
+			var arm =  document.selAndCalc.TargetArm != undefined ? document.selAndCalc.TargetArm.value : undefined;
+			var rear = document.selAndCalc.TargetRear != undefined ? document.selAndCalc.TargetRear.value : undefined;
+			var leg = document.selAndCalc.TargetLeg != undefined ? document.selAndCalc.TargetLeg.value : undefined;
+			var sub = document.selAndCalc.TargetSub != undefined ? document.selAndCalc.TargetSub.value :undefined;
 			var units =JSON.stringify({
 	        	"arm" : arm,
 	        	"rear" : rear,
@@ -605,5 +598,7 @@ $(function() {
 			</script>
 		</form>
 	</div>
+
+<script src="/js/jsrender.js" th:src="@{/js/jsrender.js}"></script>
 </body>
 </html>

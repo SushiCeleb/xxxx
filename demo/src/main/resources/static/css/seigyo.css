@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+
+
+#popActSel,
+#popActSch{
+	display: none;
+}
+/*
+#act{
+  display: none;
+}
+*/
+/*ボタンの中にあるラベルの書式調整*/
+[id^="lFont"]{
+	font-weight: lighter;
+	line-height : 0.7em;
+}
+
+/* Select,Calcボタン表示 */
+#popActSch:not(:checked) ~ .popSel,
+#popActSel:not(:checked) ~ .popCal,
+#act:not(:checked) ~ .pop
+{
+  height: 0;
+}
+#popActSch:checked ~ .popSel,
+#popActSel:checked ~ .popCal,
+#act:checked ~ .pop
+{
+  height: 100%;
+}
+.popSel,.popCal,.pop{
+  display: inline-block;
+  overflow: hidden;
+}
+
+.tstTable{
+	width: 50%;
+	 height:100%;
+}
+

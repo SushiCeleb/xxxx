@@ -6,7 +6,7 @@ public class UnitsId {
 	 */
 	@Override
 	public String toString() {
-		return "Tekitou [arm=" + arm + ", rear=" + rear + ", leg=" + leg + ", sub=" + sub + "]";
+		return "UnitsId [arm=" + arm + ", rear=" + rear + ", leg=" + leg + ", sub=" + sub + "]";
 	}
 	private Integer arm;
 	private Integer rear;

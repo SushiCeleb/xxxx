@@ -2,13 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="/css/style.css" th:href="@{/css/seigyo.css}" rel="stylesheet"/>
+
+<!-- jquery -->
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<!-- Bootstrap -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
 <title>Top page</title>
 </head>
 <body>
+<script src="/js/jsTest.js" th:src="@{/js/jsTest.js}"></script>
 	<h1>トップページ1</h1>
 <a href="serch">ユニット、セットタイプ検索、ユニットの合計値の計算</a><br/>
 <a href="insertSetType">セットタイプの入力</a><br/>
-<a href="insert">ユニットデータ入力</a>
-<a href="jsrenderTest">test</a>
+<a href="insert">ユニットデータ入力</a><br/>
+<a href="jsrenderTest">test</a><br/>
+
+
+
+	<div class="btnCont2">
+
+	<button type="button"><label for="act" class="pop">ボタンの中のラベル</label></button>
+
+	<input id ="act2" type="checkbox" name="a"/>
+
+
+	<label for="act" class="pop">
+	<button type="button">ボタンを囲うラベル</button>
+	</label>
+	<input id ="act" type="checkbox" name="a"/>
+		<div class="tstTable">
+			<table class="table table-bordered table-condensed table-hover">
+				<thead><tr><th>th1</th><th>th2</th><th>th3</th><th>th4</th></tr></thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox" /></td><td>td2</td><td>td4</td><td>td4</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" /></td><td>td2</td><td>td4</td><td>td4</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="radiobtn"/></td><td>td2</td><td>td4</td><td>td4</td>
+						</tr>
+						<tr>
+							<td><input type="radio" name="radiobtn"/></td><td>td2</td><td>td4</td><td>td4</td>
+						</tr>
+					</tbody>
+			</table>
+		</div>
+			<div class="pop">
+			<button id="selbtn" type="button" name="disp">disp</button>
+	</div>
+</div>
 </body>
 </html>
